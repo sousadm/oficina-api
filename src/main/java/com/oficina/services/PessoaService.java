@@ -121,23 +121,8 @@ public class PessoaService {
 		validacaoDeDados(pessoa, dto);
 
 		pessoa = repository.saveAndFlush(pessoa);
-
-		if (dto.getFisica() != null) {
-			PessoaFisica fisica = pessoaFisicaRepository.findByPessoa(pessoa);
-			if (fisica == null)
-				fisica = pessoaFisicaMapper.toModel(dto.getFisica());
-			else
-				pessoaFisicaMapper.updateModel(dto.getFisica(), fisica);
-			fisica.setPessoa(pessoa);
-			pessoaFisicaRepository.saveAndFlush(fisica);
-		}
-
-		if (dto.getJuridica() != null) {
-			PessoaJuridica juridica = pessoaJuridicaRepository.findByPessoa(pessoa);
-			pessoaJuridicaMapper.updateModel(dto.getJuridica(), juridica);
-			juridica.setPessoa(pessoa);
-			pessoaJuridicaRepository.saveAndFlush(juridica);
-		}
+		preparaPessoaFisica(pessoa, dto);
+		preparaPessoaJuridica(pessoa, dto);
 
 		return mapper.toDto(pessoa);
 
@@ -167,6 +152,30 @@ public class PessoaService {
 
 		return mapper.toDto(repository.saveAndFlush(pessoa));
 
+	}
+
+	private void preparaPessoaJuridica(Pessoa pessoa, PessoaDTO dto) {
+		if (dto.getJuridica() != null) {
+			PessoaJuridica juridica = pessoaJuridicaRepository.findByPessoa(pessoa);
+			pessoaJuridicaMapper.updateModel(dto.getJuridica(), juridica);
+			juridica.setPessoa(pessoa);
+			pessoaJuridicaRepository.saveAndFlush(juridica);
+		}
+	}
+
+	private void preparaPessoaFisica(Pessoa pessoa, PessoaDTO dto) {
+		if (dto.getFisica() != null) {
+			PessoaFisica fisica = pessoaFisicaRepository.findByPessoa(pessoa);
+			if (fisica == null) {
+				fisica = pessoaFisicaMapper.toModel(dto.getFisica());
+				fisica.controle.setCadastro_dt(DateUtil.agora());
+			} else {
+				pessoaFisicaMapper.updateModel(dto.getFisica(), fisica);
+				fisica.controle.setAtualizacao_dt(DateUtil.agora());
+			}
+			fisica.setPessoa(pessoa);
+			pessoaFisicaRepository.saveAndFlush(fisica);
+		}
 	}
 
 }
