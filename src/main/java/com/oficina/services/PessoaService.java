@@ -122,22 +122,9 @@ public class PessoaService {
 
 		pessoa = repository.saveAndFlush(pessoa);
 
-		if (dto.getFisica() != null) {
-			PessoaFisica fisica = pessoaFisicaRepository.findByPessoa(pessoa);
-			if (fisica == null)
-				fisica = pessoaFisicaMapper.toModel(dto.getFisica());
-			else
-				pessoaFisicaMapper.updateModel(dto.getFisica(), fisica);
-			fisica.setPessoa(pessoa);
-			pessoaFisicaRepository.saveAndFlush(fisica);
-		}
+		preparaPessoaFisica(pessoa, dto);
 
-		if (dto.getJuridica() != null) {
-			PessoaJuridica juridica = pessoaJuridicaRepository.findByPessoa(pessoa);
-			pessoaJuridicaMapper.updateModel(dto.getJuridica(), juridica);
-			juridica.setPessoa(pessoa);
-			pessoaJuridicaRepository.saveAndFlush(juridica);
-		}
+		preparaPessoaJuridica(pessoa, dto);
 
 		return mapper.toDto(pessoa);
 
@@ -167,6 +154,36 @@ public class PessoaService {
 
 		return mapper.toDto(repository.saveAndFlush(pessoa));
 
+	}
+
+	private void preparaPessoaFisica(Pessoa pessoa, @Valid PessoaDTO dto) {
+		if (dto.getFisica() != null) {
+			PessoaFisica fisica = pessoaFisicaRepository.findByPessoa(pessoa);
+			if (fisica == null) {
+				fisica = pessoaFisicaMapper.toModel(dto.getFisica());
+				fisica.controle.setCadastro_dt(DateUtil.agora());
+			} else {
+				pessoaFisicaMapper.updateModel(dto.getFisica(), fisica);
+				fisica.controle.setAtualizacao_dt(DateUtil.agora());
+			}
+			fisica.setPessoa(pessoa);
+			pessoaFisicaRepository.saveAndFlush(fisica);
+		}
+	}
+
+	private void preparaPessoaJuridica(Pessoa pessoa, @Valid PessoaDTO dto) {
+		if (dto.getJuridica() != null) {
+			PessoaJuridica juridica = pessoaJuridicaRepository.findByPessoa(pessoa);
+			if (juridica == null) {
+				juridica = pessoaJuridicaMapper.toModel(dto.getJuridica());
+				juridica.controle.setCadastro_dt(DateUtil.agora());
+			} else {
+				pessoaJuridicaMapper.updateModel(dto.getJuridica(), juridica);
+				juridica.controle.setAtualizacao_dt(DateUtil.agora());
+			}
+			juridica.setPessoa(pessoa);
+			pessoaJuridicaRepository.saveAndFlush(juridica);
+		}
 	}
 
 }

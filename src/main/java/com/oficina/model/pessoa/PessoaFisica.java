@@ -36,7 +36,7 @@ public class PessoaFisica implements Serializable {
 	private Pessoa pessoa;
 
 	@CPF
-	@Column(length = 11)
+	@Column(length = 11, nullable = false, unique = true)
 	private String cpf;
 
 	@Column(length = 20)

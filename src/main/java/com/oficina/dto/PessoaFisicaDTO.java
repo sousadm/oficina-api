@@ -22,7 +22,7 @@ public class PessoaFisicaDTO {
 	private TipoSexo sexo;
 	private BigDecimal altura = BigDecimal.ZERO;
 	private BigDecimal peso = BigDecimal.ZERO;
-//	private LocalDate nascimento;
-//	private LocalDate emissao;
-	
+	private LocalDate nascimento;
+	private LocalDate emissao;
+
 }

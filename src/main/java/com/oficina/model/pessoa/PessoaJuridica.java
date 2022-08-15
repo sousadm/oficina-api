@@ -29,12 +29,12 @@ public class PessoaJuridica implements Serializable {
 	@OneToOne
 	private Pessoa pessoa;
 
+	@CNPJ
+	@Column(length = 14, nullable = false, unique = true)
+	private String cnpj;
+
 	@Column(length = 100)
 	private String fantasia;
-
-	@CNPJ
-	@Column(length = 14)
-	private String cnpj;
 
 	@Column(length = 20)
 	private String IE;
