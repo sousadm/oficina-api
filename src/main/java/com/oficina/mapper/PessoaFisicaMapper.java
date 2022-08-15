@@ -8,7 +8,7 @@ import com.oficina.dto.PessoaFisicaDTO;
 import com.oficina.model.pessoa.PessoaFisica;
 
 @Mapper(componentModel = "spring")
-public interface PessoaFisicaMapper {
+public interface PessoaFisicaMapper { 
 
 	@Mapping(target = "controle", ignore = true)
 	@Mapping(target = "pessoa", ignore = true)
