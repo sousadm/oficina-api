@@ -2,6 +2,7 @@ package com.oficina.model.pessoa;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -10,7 +11,9 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Version;
 
 import com.oficina.model.Endereco;
@@ -56,5 +59,13 @@ public class Pessoa implements Serializable {
 
 	@Enumerated(EnumType.ORDINAL)
 	private TipoPessoa tipoPessoa = TipoPessoa.INDEFINIDO;
+
+	@JoinColumn(name = "pessoafisica_id", referencedColumnName = "id")
+	@OneToOne(cascade = CascadeType.REMOVE)
+	private PessoaFisica pessoaFisica;
+
+	@JoinColumn(name = "pessoajuridica_id", referencedColumnName = "id")
+	@OneToOne(cascade = CascadeType.REMOVE)
+	private PessoaJuridica pessoaJuridica;
 
 }

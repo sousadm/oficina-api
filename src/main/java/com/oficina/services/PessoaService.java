@@ -15,6 +15,7 @@ import com.oficina.mapper.PessoaFisicaMapper;
 import com.oficina.mapper.PessoaJuridicaMapper;
 import com.oficina.mapper.PessoaMapper;
 import com.oficina.model.enums.Ativo;
+import com.oficina.model.enums.TipoPessoa;
 import com.oficina.model.filter.PessoaFilter;
 import com.oficina.model.pessoa.Cliente;
 import com.oficina.model.pessoa.Pessoa;
@@ -119,12 +120,15 @@ public class PessoaService {
 		}
 
 		validacaoDeDados(pessoa, dto);
-
-		pessoa = repository.saveAndFlush(pessoa);
-
+		
 		preparaPessoaFisica(pessoa, dto);
-
+		
 		preparaPessoaJuridica(pessoa, dto);
+
+		if (pessoa.getPessoaFisica() == null && pessoa.getPessoaJuridica() == null) {
+			pessoa.setTipoPessoa(TipoPessoa.INDEFINIDO);
+		}
+		pessoa = repository.saveAndFlush(pessoa);
 
 		return mapper.toDto(pessoa);
 
@@ -156,9 +160,19 @@ public class PessoaService {
 
 	}
 
-	private void preparaPessoaFisica(Pessoa pessoa, @Valid PessoaDTO dto) {
+	private void preparaPessoaFisica(Pessoa pessoa, @Valid PessoaDTO dto) throws Exception {
+
 		if (dto.getFisica() != null) {
-			PessoaFisica fisica = pessoaFisicaRepository.findByPessoa(pessoa);
+
+			if (dto.getFisica().getCpf() == null)
+				throw new Exception("CPF obrigatório");
+
+			PessoaFisica fisica = null;
+			if (pessoa.getPessoaFisica() != null)
+				fisica = pessoaFisicaRepository.findById(pessoa.getPessoaFisica().getId()).get();
+			else
+				fisica = pessoaFisicaRepository.findByCpf(dto.getFisica().getCpf());
+
 			if (fisica == null) {
 				fisica = pessoaFisicaMapper.toModel(dto.getFisica());
 				fisica.controle.setCadastro_dt(DateUtil.agora());
@@ -166,14 +180,27 @@ public class PessoaService {
 				pessoaFisicaMapper.updateModel(dto.getFisica(), fisica);
 				fisica.controle.setAtualizacao_dt(DateUtil.agora());
 			}
-			fisica.setPessoa(pessoa);
-			pessoaFisicaRepository.saveAndFlush(fisica);
+
+			fisica = pessoaFisicaRepository.saveAndFlush(fisica);
+			pessoa.setPessoaFisica(fisica);
+			pessoa.setTipoPessoa(TipoPessoa.FISICA);
+
 		}
+
 	}
 
-	private void preparaPessoaJuridica(Pessoa pessoa, @Valid PessoaDTO dto) {
-		if (dto.getJuridica() != null) {
-			PessoaJuridica juridica = pessoaJuridicaRepository.findByPessoa(pessoa);
+	private void preparaPessoaJuridica(Pessoa pessoa, @Valid PessoaDTO dto) throws Exception {
+
+		if (pessoa.getPessoaJuridica() != null) {
+
+			if (dto.getJuridica().getCnpj() == null)
+				throw new Exception("CNPJ obrigatório");
+
+			PessoaJuridica juridica = pessoaJuridicaRepository.findByCnpj(dto.getJuridica().getCnpj());
+			if (pessoa.getPessoaJuridica().getId() != null) {
+				juridica = pessoaJuridicaRepository.findById(pessoa.getPessoaJuridica().getId()).orElse(juridica);
+			}
+
 			if (juridica == null) {
 				juridica = pessoaJuridicaMapper.toModel(dto.getJuridica());
 				juridica.controle.setCadastro_dt(DateUtil.agora());
@@ -181,9 +208,13 @@ public class PessoaService {
 				pessoaJuridicaMapper.updateModel(dto.getJuridica(), juridica);
 				juridica.controle.setAtualizacao_dt(DateUtil.agora());
 			}
-			juridica.setPessoa(pessoa);
-			pessoaJuridicaRepository.saveAndFlush(juridica);
+
+			juridica = pessoaJuridicaRepository.saveAndFlush(juridica);
+			pessoa.setPessoaJuridica(juridica);
+			pessoa.setTipoPessoa(TipoPessoa.JURIDICA);
+
 		}
+
 	}
 
 }

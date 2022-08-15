@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.br.CNPJ;
 
@@ -25,9 +24,6 @@ public class PessoaJuridica implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@OneToOne
-	private Pessoa pessoa;
 
 	@CNPJ
 	@Column(length = 14, nullable = false, unique = true)

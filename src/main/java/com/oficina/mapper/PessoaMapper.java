@@ -10,7 +10,8 @@ import com.oficina.model.pessoa.Pessoa;
 @Mapper(componentModel = "spring")
 public interface PessoaMapper {
 
-	@Mapping(target = "tipoPessoa", ignore = true)
+	@Mapping(target = "pessoaFisica", ignore = true)
+	@Mapping(target = "pessoaJuridica", ignore = true)
 	@Mapping(target = "endereco.bairro", source = "bairro")
 	@Mapping(target = "endereco.cep", source = "cep")
 	@Mapping(target = "endereco.complemento", source = "complemento")
@@ -20,11 +21,12 @@ public interface PessoaMapper {
 	@Mapping(target = "controle.atualizacao_dt", defaultExpression = "java(LocalDateTime.now(java.time.ZoneId.systemDefault()))")
 	@Mapping(target = "endereco.municipio", ignore = true)
 	@Mapping(target = "pessoa", ignore = true)
-	@Mapping(target = "versao", ignore = true) 
+	@Mapping(target = "versao", ignore = true)
 	@Mapping(target = "id", ignore = true) // obrigatório
 	void updateModel(PessoaDTO dto, @MappingTarget Pessoa pessoa);
 
-	@Mapping(target = "tipoPessoa", ignore = true)
+	@Mapping(target = "pessoaFisica", ignore = true)
+	@Mapping(target = "pessoaJuridica", ignore = true)
 	@Mapping(target = "endereco.bairro", source = "bairro")
 	@Mapping(target = "endereco.cep", source = "cep")
 	@Mapping(target = "endereco.complemento", source = "complemento")
@@ -36,9 +38,8 @@ public interface PessoaMapper {
 	@Mapping(target = "versao", ignore = true)
 	Pessoa toModel(PessoaDTO dto);
 
-
-	@Mapping(target = "fisica", ignore = true)
-	@Mapping(target = "juridica", ignore = true)
+	@Mapping(target = "fisica", source = "pessoaFisica")
+	@Mapping(target = "juridica", source = "pessoaJuridica")
 	@Mapping(target = "idCliente", ignore = true)
 	@Mapping(target = "idFornecedor", ignore = true)
 	@Mapping(target = "idVendedor", ignore = true)

@@ -12,7 +12,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -31,9 +30,6 @@ public class PessoaFisica implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-
-	@OneToOne
-	private Pessoa pessoa;
 
 	@CPF
 	@Column(length = 11, nullable = false, unique = true)

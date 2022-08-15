@@ -2,6 +2,8 @@ package com.oficina.dto;
 
 import java.time.LocalDateTime;
 
+import com.oficina.model.enums.TipoPessoa;
+
 import lombok.Data;
 
 @Data
@@ -28,6 +30,7 @@ public class PessoaDTO {
 	private String cep;
 	private String municipio;
 
+	private TipoPessoa tipoPessoa;
 	private PessoaFisicaDTO fisica;
 	private PessoaJuridicaDTO juridica;
 
