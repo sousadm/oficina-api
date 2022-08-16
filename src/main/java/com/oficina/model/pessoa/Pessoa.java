@@ -49,13 +49,7 @@ public class Pessoa implements Serializable {
 	private String celular;
 
 	@Embedded
-	public Controle controle = new Controle();
-
-	@Embedded
 	private Endereco endereco;
-
-	@Version
-	private Integer versao;
 
 	@Enumerated(EnumType.ORDINAL)
 	private TipoPessoa tipoPessoa = TipoPessoa.INDEFINIDO;
@@ -67,5 +61,11 @@ public class Pessoa implements Serializable {
 	@JoinColumn(name = "pessoajuridica_id", referencedColumnName = "id")
 	@OneToOne(cascade = CascadeType.REMOVE)
 	private PessoaJuridica pessoaJuridica;
+
+	@Embedded
+	public Controle controle = new Controle();
+
+	@Version
+	private Integer versao;
 
 }

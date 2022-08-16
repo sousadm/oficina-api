@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 import lombok.Data;
@@ -17,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cliente implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -25,8 +26,9 @@ public class Cliente implements Serializable {
 	private Integer id;
 
 	@OneToOne
+	@JoinColumn(unique = true, nullable = false)
 	private Pessoa pessoa;
-	
+
 	@Embedded
 	public Controle controle = new Controle();
 

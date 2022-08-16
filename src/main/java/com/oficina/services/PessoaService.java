@@ -18,11 +18,13 @@ import com.oficina.model.enums.Ativo;
 import com.oficina.model.enums.TipoPessoa;
 import com.oficina.model.filter.PessoaFilter;
 import com.oficina.model.pessoa.Cliente;
+import com.oficina.model.pessoa.Fornecedor;
 import com.oficina.model.pessoa.Pessoa;
 import com.oficina.model.pessoa.PessoaFisica;
 import com.oficina.model.pessoa.PessoaJuridica;
 import com.oficina.model.pessoa.Vendedor;
 import com.oficina.repository.ClienteRepository;
+import com.oficina.repository.FornecedorRepository;
 import com.oficina.repository.MunicipioRepository;
 import com.oficina.repository.PessoaFisicaRepository;
 import com.oficina.repository.PessoaJuridicaRepository;
@@ -48,6 +50,9 @@ public class PessoaService {
 
 	@Autowired
 	private VendedorRepository vendedorRepository;
+
+	@Autowired
+	private FornecedorRepository fornecedorRepository;
 
 	@Autowired
 	private ClienteRepository clienteRepository;
@@ -80,6 +85,10 @@ public class PessoaService {
 		Cliente cliente = clienteRepository.findByPessoa(pessoa);
 		if (cliente != null && cliente.getControle().getAtivo() == Ativo.ATIVO)
 			dto.setIdCliente(cliente.getId());
+
+		Fornecedor fornecedor = fornecedorRepository.findByPessoa(pessoa);
+		if (fornecedor != null && fornecedor.getControle().getAtivo() == Ativo.ATIVO)
+			dto.setIdFornecedor(fornecedor.getId());
 
 	}
 
@@ -120,9 +129,9 @@ public class PessoaService {
 		}
 
 		validacaoDeDados(pessoa, dto);
-		
+
 		preparaPessoaFisica(pessoa, dto);
-		
+
 		preparaPessoaJuridica(pessoa, dto);
 
 		if (pessoa.getPessoaFisica() == null && pessoa.getPessoaJuridica() == null) {
@@ -167,12 +176,11 @@ public class PessoaService {
 			if (dto.getFisica().getCpf() == null)
 				throw new Exception("CPF obrigatório");
 
-			PessoaFisica fisica = null;
-			if (pessoa.getPessoaFisica() != null)
-				fisica = pessoaFisicaRepository.findById(pessoa.getPessoaFisica().getId()).get();
-			else
-				fisica = pessoaFisicaRepository.findByCpf(dto.getFisica().getCpf());
+			Pessoa pesquisa = repository.findByCpf(dto.getFisica().getCpf());
+			if (pesquisa != null && !pesquisa.getId().equals(pessoa.getId()))
+				throw new Exception("CPF já cadastrado para outra pessoa");
 
+			PessoaFisica fisica = pesquisa != null ? pesquisa.getPessoaFisica() : new PessoaFisica();
 			if (fisica == null) {
 				fisica = pessoaFisicaMapper.toModel(dto.getFisica());
 				fisica.controle.setCadastro_dt(DateUtil.agora());
@@ -196,11 +204,11 @@ public class PessoaService {
 			if (dto.getJuridica().getCnpj() == null)
 				throw new Exception("CNPJ obrigatório");
 
-			PessoaJuridica juridica = pessoaJuridicaRepository.findByCnpj(dto.getJuridica().getCnpj());
-			if (pessoa.getPessoaJuridica().getId() != null) {
-				juridica = pessoaJuridicaRepository.findById(pessoa.getPessoaJuridica().getId()).orElse(juridica);
-			}
+			Pessoa pesquisa = repository.findByCnpj(dto.getJuridica().getCnpj());
+			if (pesquisa != null && !pesquisa.getId().equals(pessoa.getId()))
+				throw new Exception("CNPJ já cadastrado para outra pessoa");
 
+			PessoaJuridica juridica = pesquisa != null ? pesquisa.getPessoaJuridica() : new PessoaJuridica();
 			if (juridica == null) {
 				juridica = pessoaJuridicaMapper.toModel(dto.getJuridica());
 				juridica.controle.setCadastro_dt(DateUtil.agora());
