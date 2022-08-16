@@ -38,7 +38,11 @@ public class CentroCustoSpecification implements Specification<CentroCusto> {
 			predicates.add(builder.equal(root.get("tipo"), filtro.getTipo()));
 		}
 
-		query.orderBy(builder.asc(root.get("descricao")));
+		if (filtro.getAtivo() != null) {
+			predicates.add(builder.equal(root.get("ativo"), filtro.getAtivo()));
+		}
+
+		query.orderBy(builder.desc(root.get("tipo")), builder.asc(root.get("descricao")));
 
 		return builder.and(predicates.toArray(new Predicate[0]));
 	}

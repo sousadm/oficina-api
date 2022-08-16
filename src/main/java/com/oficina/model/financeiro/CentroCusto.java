@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.oficina.model.enums.Ativo;
 import com.oficina.model.enums.TipoMovimento;
 
 import lombok.Data;
@@ -32,5 +33,8 @@ public class CentroCusto implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = false)
 	private TipoMovimento tipo;
+	
+	@Enumerated(EnumType.ORDINAL)
+	private Ativo ativo = Ativo.ATIVO;	
 
 }

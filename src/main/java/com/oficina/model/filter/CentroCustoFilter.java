@@ -1,5 +1,6 @@
 package com.oficina.model.filter;
 
+import com.oficina.model.enums.Ativo;
 import com.oficina.model.enums.TipoMovimento;
 
 import lombok.Data;
@@ -10,5 +11,6 @@ public class CentroCustoFilter {
 	private Integer id;
 	private String descricao;
 	private TipoMovimento tipo;
+	private Ativo ativo;
 
 }
