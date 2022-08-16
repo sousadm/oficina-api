@@ -1,14 +1,16 @@
-package com.oficina.model.pessoa;
+package com.oficina.model.financeiro;
 
 import java.io.Serializable;
 
-import javax.persistence.Embedded;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+
+import com.oficina.model.enums.TipoMovimento;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,7 +18,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class Fornecedor implements Serializable {
+public class CentroCusto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -24,11 +26,11 @@ public class Fornecedor implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	@OneToOne
-	@JoinColumn(unique = true, nullable = false)
-	private Pessoa pessoa;
-	
-	@Embedded
-	public Controle controle = new Controle();
+	@Column(length = 100, nullable = false)
+	private String descricao;
+
+	@Enumerated(EnumType.ORDINAL)
+	@Column(nullable = false)
+	private TipoMovimento tipo;
 
 }
