@@ -7,6 +7,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum TipoMovimento {
 
-	ENTRADA, SAIDA
+	SAIDA, ENTRADA
 
 }
