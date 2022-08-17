@@ -45,7 +45,7 @@ public class PessoaResource {
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public PessoaDTO pessoaPorId(@PathVariable Integer id) {
-		return pessoaService.porId(id);
+		return pessoaService.dtoPorId(id);
 	}
 
 	@GetMapping

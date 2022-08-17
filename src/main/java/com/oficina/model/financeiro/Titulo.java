@@ -13,9 +13,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
 import com.oficina.model.enums.TipoMovimento;
+import com.oficina.model.enums.TipoRepeticao;
 import com.oficina.model.pessoa.Controle;
+import com.oficina.model.pessoa.Pessoa;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -34,16 +39,30 @@ public class Titulo implements Serializable {
 	@ManyToOne
 	private Titulo origem;
 
-	@Column(length = 100)
+	@ManyToOne
+	private Pessoa responsavel;
+
+	@ManyToOne
+	private CentroCusto centroCusto;
+
+	@Size(min = 3)
+	@Column(length = 100, nullable = false)
 	private String descricao;
-	
+
 	@Enumerated(EnumType.ORDINAL)
 	private TipoMovimento tipo;
 
+	@Enumerated(EnumType.ORDINAL)
+	private TipoRepeticao repeticao = TipoRepeticao.DESABILITADO;
+
 	private LocalDate vencimento_dt;
 	private LocalDate previsao_dt;
+	private LocalDate quitacao_dt;
 
+	@PositiveOrZero(message = "valor incorreto")
 	private BigDecimal valor = BigDecimal.ZERO;
+
+	@Positive
 	private BigDecimal saldo = BigDecimal.ZERO;
 
 	@Embedded
