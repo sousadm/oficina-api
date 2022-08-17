@@ -36,7 +36,7 @@ public class PessoaSpecification implements Specification<Pessoa> {
 		}
 
 		if (filtro.getAtivo() != null) {
-			predicates.add(builder.equal(root.get("controle.ativo"), filtro.getAtivo()));
+			predicates.add(builder.equal(root.get("controle").get("ativo"), filtro.getAtivo()));
 		}
 
 		query.orderBy(builder.asc(root.get("nome")));

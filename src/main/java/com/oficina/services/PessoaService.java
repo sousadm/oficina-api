@@ -66,13 +66,15 @@ public class PessoaService {
 	@Autowired
 	private MunicipioRepository municipioRepository;
 
-	public PessoaDTO porId(Integer codigo) {
-		Pessoa pessoa = repository.findById(codigo)
+	public Pessoa porid(Integer codigo) {
+		return repository.findById(codigo)
 				.orElseThrow(() -> new RecursoNaoLocalizadoException("registro não localizada!"));
+	}
 
+	public PessoaDTO dtoPorId(Integer codigo) {
+		Pessoa pessoa = this.porid(codigo);
 		PessoaDTO dto = mapper.toDto(pessoa);
 		prepara(pessoa, dto);
-
 		return dto;
 	}
 
@@ -93,9 +95,7 @@ public class PessoaService {
 	}
 
 	public Page<PessoaDTO> listar(Pageable paginacao, PessoaFilter filtro) {
-
 		Specification<Pessoa> spec = new PessoaSpecification(filtro);
-
 		return repository.findAll(spec, paginacao).map(x -> this.mapper.toDto(x));
 	}
 
