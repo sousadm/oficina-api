@@ -16,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oficina.dto.FornecedorDTO;
-import com.oficina.mapper.FornecedorMapper;
-import com.oficina.model.filter.PessoaFilter;
-import com.oficina.model.pessoa.Fornecedor;
-import com.oficina.repository.FornecedorRepository;
-import com.oficina.repository.specification.FornecedorSpecification;
-import com.oficina.services.FornecedorService;
+import com.oficina.pessoa.dto.FornecedorDTO;
+import com.oficina.pessoa.filter.PessoaFilter;
+import com.oficina.pessoa.mapper.FornecedorMapper;
+import com.oficina.pessoa.model.Fornecedor;
+import com.oficina.pessoa.repository.FornecedorRepository;
+import com.oficina.pessoa.repository.specification.FornecedorSpecification;
+import com.oficina.pessoa.services.FornecedorService;
 
 @RestController
 @RequestMapping("/fornecedor")

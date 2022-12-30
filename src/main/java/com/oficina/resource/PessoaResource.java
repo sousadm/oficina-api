@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oficina.dto.ClienteDTO;
-import com.oficina.dto.FornecedorDTO;
-import com.oficina.dto.PessoaDTO;
-import com.oficina.dto.VendedorDTO;
-import com.oficina.model.filter.PessoaFilter;
-import com.oficina.services.ClienteService;
-import com.oficina.services.FornecedorService;
-import com.oficina.services.PessoaService;
-import com.oficina.services.VendedorService;
+import com.oficina.pessoa.dto.ClienteDTO;
+import com.oficina.pessoa.dto.FornecedorDTO;
+import com.oficina.pessoa.dto.PessoaDTO;
+import com.oficina.pessoa.dto.VendedorDTO;
+import com.oficina.pessoa.filter.PessoaFilter;
+import com.oficina.pessoa.services.ClienteService;
+import com.oficina.pessoa.services.FornecedorService;
+import com.oficina.pessoa.services.PessoaService;
+import com.oficina.pessoa.services.VendedorService;
 
 @RestController
 @RequestMapping("/pessoa")

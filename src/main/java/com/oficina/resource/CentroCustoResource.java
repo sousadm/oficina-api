@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oficina.dto.CentroCustoDTO;
-import com.oficina.mapper.CentroCustoMapper;
-import com.oficina.model.filter.CentroCustoFilter;
-import com.oficina.model.financeiro.CentroCusto;
-import com.oficina.services.CentroCustoService;
+import com.oficina.financeiro.dto.CentroCustoDTO;
+import com.oficina.financeiro.model.CentroCusto;
+import com.oficina.pessoa.filter.CentroCustoFilter;
+import com.oficina.pessoa.mapper.CentroCustoMapper;
+import com.oficina.pessoa.services.CentroCustoService;
 
 @RestController
 @RequestMapping("/centro-custo")

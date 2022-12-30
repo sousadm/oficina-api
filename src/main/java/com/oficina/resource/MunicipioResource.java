@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oficina.model.Municipio;
-import com.oficina.services.MunicipioService;
+import com.oficina.pessoa.endereco.Municipio;
+import com.oficina.pessoa.services.MunicipioService;
 
 @RestController
 @RequestMapping("/municipio")

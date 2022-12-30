@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.oficina.dto.TituloDTO;
-import com.oficina.mapper.TituloMapper;
-import com.oficina.model.filter.TituloFilter;
-import com.oficina.model.financeiro.Titulo;
-import com.oficina.services.TituloService;
+import com.oficina.financeiro.dto.TituloDTO;
+import com.oficina.financeiro.filter.TituloFilter;
+import com.oficina.financeiro.mapper.TituloMapper;
+import com.oficina.financeiro.model.Titulo;
+import com.oficina.pessoa.services.TituloService;
 
 @RestController
 @RequestMapping("/titulo")
